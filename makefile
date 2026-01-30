@@ -10,4 +10,4 @@ build:
 
 # clean everything after build
 postbuildclean:
-	rm -rf .git server1 .gitignore Dockerfile go.* index.html main.go makefile
+	rm -rf .git .gitignore Dockerfile go.* index.html main.go makefile
