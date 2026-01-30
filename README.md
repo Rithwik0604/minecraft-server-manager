@@ -11,7 +11,7 @@ This is a simple web-based manager for Minecraft servers that run in Docker cont
 
 ## Project Structure
 
--   `main.go`: The main application logic.
+-   `main.go`: The main application logic. Loads port number and address from '.env' placed in the same directory as executable.
 -   `index.html`: The frontend HTML file (embedded in the binary).
 -   `go.mod`, `go.sum`: Go module files.
 -   `makefile`: Contains build commands.

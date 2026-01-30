@@ -8,11 +8,13 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/docker/docker/api/types/container"
 	"github.com/docker/docker/api/types/filters"
 	"github.com/docker/docker/client"
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 )
 
 //go:embed index.html
@@ -29,6 +31,13 @@ type ContainersInfo struct {
 }
 
 func main() {
+	if err := godotenv.Load(".env"); err != nil {
+		panic(err)
+	}
+
+	port := os.Getenv("port")
+
+	gin.SetMode(gin.ReleaseMode)
 	r := gin.Default()
 
 	templ := template.Must(template.New("").ParseFS(templateFS, "index.html"))
@@ -54,7 +63,8 @@ func main() {
 		ctx.Status(http.StatusOK)
 	})
 
-	if err := r.Run(); err != nil {
+	log.Println("Server Running!")
+	if err := r.Run(port); err != nil {
 		panic(err)
 	}
 }
