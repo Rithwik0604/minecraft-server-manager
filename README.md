@@ -50,3 +50,9 @@ This is a simple web-based manager for Minecraft servers that run in Docker cont
     ```
 
 4.  Open your web browser and navigate to `http://localhost:8080`.
+
+5.  **Clean the repository:**
+    Clean everything after building the app.
+    ```bash
+    make postbuildclean
+    ```
