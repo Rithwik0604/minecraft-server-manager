@@ -36,6 +36,7 @@ func main() {
 	}
 
 	port := os.Getenv("port")
+	title := os.Getenv("title")
 
 	gin.SetMode(gin.ReleaseMode)
 	r := gin.Default()
@@ -45,7 +46,7 @@ func main() {
 
 	r.GET("/", func(ctx *gin.Context) {
 		ctx.HTML(http.StatusOK, "index.html", gin.H{
-			"title": "Main website",
+			"title": title,
 			"data":  getContainers(),
 		})
 	})

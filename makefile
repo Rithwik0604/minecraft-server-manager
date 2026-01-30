@@ -2,7 +2,7 @@ TAG := 1.21.11
 REPO := rithwik0604/minecraft-server
 
 buildimage:
-	docker build -t $(REPO):$(TAG) image/
+	docker build -t $(REPO):$(TAG) .
 pushimage:
 	docker push $(REPO):$(TAG)
 build:
