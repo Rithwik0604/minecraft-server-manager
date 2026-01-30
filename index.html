@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en" data-bs-theme="dark">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+            crossorigin="anonymous" />
+        <title>{{.title}}</title>
+        <style>
+            .loader-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(255, 255, 255, 0.7);
+                z-index: 9999;
+                display: none;
+                justify-content: center;
+                align-items: center;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="loader-overlay" id="loader">
+            <div class="spinner-border">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+        <div class="container">
+            <h1 class="mt-4">Servers</h1>
+            <table class="table table-striped mt-4">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>ID</th>
+                        <th>Status</th>
+                        <th>State</th>
+                        <th>CPU Usage</th>
+                        <th>Memory Usage</th>
+                        <th>Port</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{range .data}}
+                    <tr class="{{if eq .State "running"}}table-success{{end}}">
+                        <td>{{.Name}}</td>
+                        <td>{{.Id}}</td>
+                        <td>{{.Status}}</td>
+                        <td>{{.State}}</td>
+                        <td>{{printf "%.2f" .CPUUsage}}%</td>
+                        <td>{{.MemoryUsage}} MB</td>
+                        <td>{{if eq .Port 0}}-{{else}}{{.Port}}{{end}}</td>
+                        <td>
+                            {{if eq .State "running"}}
+                            <button class="btn btn-danger btn-sm" onclick="toggleContainer('{{.Id}}', this)">Stop</button>
+                            {{else}}
+                            <button class="btn btn-success btn-sm" onclick="toggleContainer('{{.Id}}', this)">Start</button>
+                            {{end}}
+                        </td>
+                    </tr>
+                    {{end}}
+                </tbody>
+            </table>
+        </div>
+
+        <script>
+            async function toggleContainer(id, button) {
+                const loader = document.getElementById('loader');
+                loader.style.display = 'flex';
+                button.disabled = true;
+
+                try {
+                    const response = await fetch(`/toggle/${id}`, {
+                        method: 'POST',
+                    });
+
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        alert(`Error: ${errorData.error}`);
+                    }
+                } catch (error) {
+                    alert(`An unexpected error occurred: ${error}`);
+                } finally {
+                    location.reload();
+                }
+            }
+        </script>
+    </body>
+</html>

@@ -1,0 +1,14 @@
+#version: "3.8"
+
+services:
+    minecraft:
+        image: rithwik0604/minecraft-server:1.21.11
+        container_name: mc-server1
+        ports:
+            - "25565:25565"
+        environment:
+            - RAM=4G
+        volumes:
+            - ./data:/app/world
+        restart: unless-stopped
+        cpus: 4.0
